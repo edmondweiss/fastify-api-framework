@@ -7,7 +7,7 @@
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
-  "author": "",
+  "author": "Edmond Weiss",
   "license": "ISC",
   "devDependencies": {
     "@types/node": "^16.11.4",

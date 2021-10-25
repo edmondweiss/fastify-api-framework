@@ -10,7 +10,7 @@
     "build": "npm-run-all clean compile",
     "start": "node --require dotenv/config dist/index.js",
     "watch-compile": "tsc --watch",
-    "watch-restart": "nodemon --delay 1 --require dotenv/config dist/index.js",
+    "watch-restart": "nodemon --delay 1 --watch .env --watch dist --require dotenv/config dist/index.js",
     "dev": "npm-run-all --parallel watch-compile watch-restart"
   },
   "keywords": [],

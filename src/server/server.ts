@@ -7,11 +7,11 @@ export const startServer = (opts?: FastifyServerOptions): FastifyInstance =>
 export const configureServer = async (
   server: FastifyInstance
 ): Promise<void> => {
-  await registerControllers(server);
+  return registerControllers(server);
 };
 
 export const registerControllers = async (
   server: FastifyInstance
 ): Promise<void> => {
-  server.register(healthStatusController);
+  await server.register(healthStatusController);
 };

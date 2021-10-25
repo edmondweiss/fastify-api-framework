@@ -1,11 +1,15 @@
 {
   "compilerOptions": {
     "module": "ES2020",
+    "moduleResolution": "Node",
     "target": "ES2021",
     "sourceMap": true,
-    "strict": true
+    "strict": true,
+    "outDir": "dist"
   },
-  "include": [],
+  "include": [
+    "src/**/*"
+  ],
   "exclude": [
     "node_modules",
     "src/scripts"

@@ -1,5 +1,5 @@
 import { FastifyPluginAsync } from "fastify";
-import { container } from "../config/container.js";
+import { container } from "../config/container-config.js";
 import { HealthStatusServiceIdentifier } from "../services/health-status/health-status-service.js";
 import { HealthStatusService } from "../services/health-status/health-status-types.js";
 

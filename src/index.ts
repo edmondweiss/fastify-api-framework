@@ -1,11 +1,12 @@
-import { configureServer, startServer } from "./server/server.js";
-import { Env } from "./config/env.js";
+import { configureServer, createServer } from "./server/server.js";
+import { Env } from "./global/env.js";
+import { serverConfig } from "./config/server-config.js";
 
-export const server = startServer({});
+export const server = createServer(serverConfig);
 
 const app = async () => {
   await configureServer(server);
-  await server.listen(Env.PORT ?? 8080);
+  await server.listen(Env.PORT);
   console.log(`🚀 Server started on http://localhost:${Env.PORT}`);
 };
 

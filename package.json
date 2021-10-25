@@ -5,13 +5,13 @@
   "main": "index.js",
   "type": "module",
   "scripts": {
+    "build": "npm-run-all clean compile",
     "clean": "rimraf dist",
     "compile": "tsc",
-    "build": "npm-run-all clean compile",
+    "dev": "npm-run-all --parallel watch-compile watch-restart",
     "start": "node --require dotenv/config dist/index.js",
     "watch-compile": "tsc --watch",
-    "watch-restart": "nodemon --delay 1 --watch .env --watch dist --require dotenv/config dist/index.js",
-    "dev": "npm-run-all --parallel watch-compile watch-restart"
+    "watch-restart": "nodemon --delay 1 --watch .env --watch dist --require dotenv/config dist/index.js"
   },
   "keywords": [],
   "author": "Edmond Weiss",

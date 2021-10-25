@@ -6,7 +6,8 @@
     "target": "ES2021",
     "sourceMap": true,
     "strict": true,
-    "outDir": "dist"
+    "outDir": "dist",
+    "incremental": true
   },
   "include": [
     "src/**/*"

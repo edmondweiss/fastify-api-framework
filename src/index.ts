@@ -4,8 +4,9 @@ import { fastify, FastifyInstance, FastifyLogFn } from "fastify";
 import { Logger } from "./server/logger/logger.js";
 import { FastifyServerModifier } from "./server/fastify/fastify-server.js";
 import { FastifyLogger } from "./server/fastify/fastify-logger.js";
+import { fastifyOptions } from "./config/fastify-options.js";
 
-const fastifyInstance: FastifyInstance = fastify();
+const fastifyInstance: FastifyInstance = fastify(fastifyOptions);
 
 const logger: Logger<Parameters<FastifyLogFn>> = new FastifyLogger(
   fastifyInstance

@@ -4,7 +4,7 @@ import {
   HealthStatusService,
 } from "./health-status-types.js";
 
-export const HealthStatusServiceIdentifier = Symbol("HealthStatusService");
+export const HealthStatusServiceImpl = Symbol("HealthStatusService");
 
 @injectable()
 export class DefaultHealthStatusService implements HealthStatusService {

@@ -2,33 +2,33 @@ import { FastifyInstance, FastifyPluginAsync } from "fastify";
 import {
   FastifyErrorHandler,
   FastifyHook,
-  FastifyNotFoundArgs,
+  FastifyNotFoundHandler,
 } from "./fastify-types.js";
 
 export class FastifyServerModifier {
+  private controllers: Set<FastifyPluginAsync> = new Set();
   private errorHandler: FastifyErrorHandler | undefined;
-  private hooks: FastifyHook[] = [];
-  private notFoundArgs: FastifyNotFoundArgs | undefined;
-  private controllers: FastifyPluginAsync[] = [];
-  private plugins: FastifyPluginAsync[] = [];
+  private hooks: Set<FastifyHook> = new Set();
+  private notFoundHandler: FastifyNotFoundHandler | undefined;
+  private plugins: Set<FastifyPluginAsync> = new Set();
   private readonly fastifyInstance: FastifyInstance;
 
   constructor(fastifyInstance: FastifyInstance) {
     this.fastifyInstance = fastifyInstance;
   }
 
-  addHooks(hooks: FastifyHook[] = []) {
-    this.hooks = hooks;
+  addHook(hook: FastifyHook) {
+    this.hooks.add(hook);
     return this;
   }
 
-  addControllers(controllers: FastifyPluginAsync[] = []) {
-    this.controllers = controllers;
+  addController(controller: FastifyPluginAsync) {
+    this.controllers.add(controller);
     return this;
   }
 
-  addPlugins(plugins: FastifyPluginAsync[] = []) {
-    this.plugins = plugins;
+  addPlugin(plugin: FastifyPluginAsync) {
+    this.plugins.add(plugin);
     return this;
   }
 
@@ -37,14 +37,14 @@ export class FastifyServerModifier {
     return this;
   }
 
-  setNotFoundHandler(args: FastifyNotFoundArgs) {
-    this.notFoundArgs = args;
+  setNotFoundHandler(handler: FastifyNotFoundHandler) {
+    this.notFoundHandler = handler;
     return this;
   }
 
   async build(): Promise<FastifyInstance> {
-    if (this.notFoundArgs) {
-      this.fastifyInstance.setNotFoundHandler(...this.notFoundArgs);
+    if (this.notFoundHandler) {
+      this.fastifyInstance.setNotFoundHandler(this.notFoundHandler);
       console.log(`Not found handler has been set.`);
     }
     if (this.errorHandler) {

@@ -18,6 +18,6 @@ export type FastifyHook = {
   handler: FastifyHookHandler;
 };
 
-export type FastifyNotFoundArgs = Parameters<
+export type FastifyNotFoundHandler = Parameters<
   FastifyInstance["setNotFoundHandler"]
->;
+>[1];

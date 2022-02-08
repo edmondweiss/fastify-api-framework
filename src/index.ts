@@ -1,22 +1,21 @@
 import { Env } from "./global/env.js";
 import { healthStatusController } from "./controllers/health-status.js";
-import { fastify, FastifyInstance, FastifyLogFn } from "fastify";
-import { Logger } from "./server/logger/logger.js";
+import { fastify, FastifyInstance } from "fastify";
 import { FastifyServerModifier } from "./server/fastify/fastify-server.js";
 import { FastifyLogger } from "./server/fastify/fastify-logger.js";
 import { fastifyOptions } from "./config/fastify-options.js";
+import { appErrorHandler } from "./server/errors/app-error-handler.js";
 
 const fastifyInstance: FastifyInstance = fastify(fastifyOptions);
 
-const logger: Logger<Parameters<FastifyLogFn>> = new FastifyLogger(
-  fastifyInstance
-);
+export const logger = new FastifyLogger(fastifyInstance);
 
 const app = async () => {
   const server: FastifyInstance = await new FastifyServerModifier(
     fastifyInstance
   )
-    .addControllers([healthStatusController])
+    .setErrorHandler(appErrorHandler)
+    .addController(healthStatusController)
     .build();
   console.log(
     `The routes \n${fastifyInstance.printRoutes({ includeHooks: true })}`
@@ -30,5 +29,3 @@ app().catch((err) => {
   console.log(err);
   process.exit(1);
 });
-
-export { logger };

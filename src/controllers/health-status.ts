@@ -8,7 +8,7 @@ export const healthStatusController: FastifyPluginAsync = async (server) => {
     HealthStatusServiceImpl
   );
 
-  server.get("/health/status", (request, reply) => {
+  server.get("/health/status", async (request, reply) => {
     reply.header("Content-Type", "application/json");
     reply.send(healthStatusService.getStatus());
   });

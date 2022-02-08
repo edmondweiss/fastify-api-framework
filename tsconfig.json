@@ -1,13 +1,14 @@
 {
   "compilerOptions": {
+    "baseUrl": "src",
     "experimentalDecorators": true,
+    "incremental": true,
     "module": "ES2020",
     "moduleResolution": "Node",
-    "target": "ES2021",
+    "outDir": "dist",
     "sourceMap": true,
     "strict": true,
-    "outDir": "dist",
-    "incremental": true
+    "target": "ES2021",
   },
   "include": [
     "src/**/*"

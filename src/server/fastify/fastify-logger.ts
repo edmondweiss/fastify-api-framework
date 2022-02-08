@@ -8,23 +8,23 @@ export class FastifyLogger implements Logger<Parameters<FastifyLogFn>> {
     this.#fastifyInstance = fastifyInstance;
   }
 
-  logDebug(args: Parameters<FastifyLogFn>): void {
-    this.#fastifyInstance.log.debug(...args);
+  debug(...args: Parameters<FastifyLogFn>): void {
+    return this.#fastifyInstance.log.debug(...args);
   }
 
-  logError(args: Parameters<FastifyLogFn>): void {
-    this.#fastifyInstance.log.error(...args);
+  error(...args: Parameters<FastifyLogFn>): void {
+    return this.#fastifyInstance.log.error(...args);
   }
 
-  logFatal(args: Parameters<FastifyLogFn>): void {
-    this.#fastifyInstance.log.fatal(...args);
+  fatal(...args: Parameters<FastifyLogFn>): void {
+    return this.#fastifyInstance.log.fatal(...args);
   }
 
-  logInfo(args: Parameters<FastifyLogFn>): void {
-    this.#fastifyInstance.log.info(...args);
+  info(...args: Parameters<FastifyLogFn>): void {
+    return this.#fastifyInstance.log.info(...args);
   }
 
-  logWarning(args: Parameters<FastifyLogFn>): void {
-    this.#fastifyInstance.log.warn(...args);
+  warning(...args: Parameters<FastifyLogFn>): void {
+    return this.#fastifyInstance.log.warn(...args);
   }
 }

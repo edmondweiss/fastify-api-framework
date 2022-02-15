@@ -1,4 +1,4 @@
-import { FastifyErrorHandler } from "../fastify/fastify-types.js";
+import { FastifyErrorHandler } from "../server/fastify-types.js";
 import { logger } from "../../index.js";
 import { DEFAULT_HTTP_STATUS_CODE, UnknownError } from "./server-error.js";
 import { FastifyReply } from "fastify/types/reply.js";

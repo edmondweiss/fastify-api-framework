@@ -1,25 +1,25 @@
 import { Env } from "./global/env.js";
-import { healthStatusController } from "./controllers/health-status.js";
 import { fastify, FastifyInstance } from "fastify";
-import { FastifyServerModifier } from "./server/fastify/fastify-server.js";
-import { FastifyLogger } from "./server/fastify/fastify-logger.js";
+import { FastifyLogger } from "./server/server/fastify-logger.js";
 import { fastifyOptions } from "./config/fastify-options.js";
-import { appErrorHandler } from "./server/errors/app-error-handler.js";
+import {
+  registerControllers,
+  registerHandlers,
+  registerHooks,
+  registerPlugins,
+} from "./server/server/fastify-server.js";
 
-const fastifyInstance: FastifyInstance = fastify(fastifyOptions);
+const server: FastifyInstance = fastify(fastifyOptions);
 
-export const logger = new FastifyLogger(fastifyInstance);
+export const logger = new FastifyLogger(server);
 
 const app = async () => {
-  const server: FastifyInstance = await new FastifyServerModifier(
-    fastifyInstance
-  )
-    .setErrorHandler(appErrorHandler)
-    .addController(healthStatusController)
-    .build();
-  console.log(
-    `The routes \n${fastifyInstance.printRoutes({ includeHooks: true })}`
-  );
+  registerHandlers(server);
+  registerPlugins(server);
+  registerHooks(server);
+  registerControllers(server);
+
+  console.log(`The routes \n${server.printRoutes({ includeHooks: true })}`);
   await server.listen(Env.PORT);
   console.log(`🚀 Server started on http://localhost:${Env.PORT}`);
 };

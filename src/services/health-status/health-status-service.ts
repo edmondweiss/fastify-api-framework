@@ -2,7 +2,7 @@ import { injectable } from "inversify";
 import {
   HealthStatusInfo,
   HealthStatusService,
-} from "./health-status-types.js";
+} from "./health-status.types.js";
 
 export const HealthStatusServiceImpl = Symbol("HealthStatusService");
 

@@ -4,7 +4,7 @@ import {
   DefaultHealthStatusService,
   HealthStatusServiceImpl,
 } from "../services/health-status/health-status-service.js";
-import { HealthStatusService } from "../services/health-status/health-status-types.js";
+import { HealthStatusService } from "../services/health-status/health-status.types.js";
 
 export const container = new Container();
 

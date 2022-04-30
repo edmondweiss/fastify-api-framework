@@ -1,9 +1,8 @@
 {
   "compilerOptions": {
-    "baseUrl": "src",
     "experimentalDecorators": true,
     "incremental": true,
-    "module": "ES2020",
+    "module": "ESNext",
     "moduleResolution": "Node",
     "outDir": "dist",
     "sourceMap": true,

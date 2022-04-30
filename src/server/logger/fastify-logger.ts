@@ -1,5 +1,5 @@
-import { Logger } from "../logger/logger.js";
 import { FastifyInstance, FastifyLogFn } from "fastify";
+import { Logger } from "./logger.types.js";
 
 export class FastifyLogger implements Logger<Parameters<FastifyLogFn>> {
   readonly #fastifyInstance: FastifyInstance;

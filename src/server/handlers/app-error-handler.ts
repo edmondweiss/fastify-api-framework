@@ -1,14 +1,14 @@
-import { FastifyErrorHandler } from "./fastify.types.js";
-import { ServerError } from "../modules/errors/server-error.js";
+import { FastifyErrorHandler } from "../fastify.types.js";
+import { ServerError } from "../../modules/errors/server-error.js";
 import {
   ApiError,
   ApiErrorResponse,
   ErrorRecord,
-} from "../modules/errors/error.types.js";
+} from "../../modules/errors/error.types.js";
 import { v4 } from "uuid";
-import { InternalServerError } from "../modules/errors/custom-errors/internal-server-error.js";
-import { ERROR_MESSAGES } from "../modules/errors/error-messages.js";
-import { HTTP_STATUSES } from "../modules/http-statuses/http-statuses.js";
+import { InternalServerError } from "../../modules/errors/custom-errors/internal-server-error.js";
+import { ERROR_MESSAGES } from "../../modules/errors/error-messages.js";
+import { HTTP_STATUSES } from "../../modules/http-statuses/http-statuses.js";
 
 const createErrorRecord = (error: ServerError | Error | unknown) => {
   let record: ErrorRecord;

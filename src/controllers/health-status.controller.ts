@@ -1,10 +1,9 @@
-import { FastifyPluginAsync } from "fastify";
-import { container } from "../config/container-config.js";
 import { HealthStatusServiceImpl } from "../services/health-status/health-status-service.js";
 import { HealthStatusService } from "../services/health-status/health-status.types.js";
 import { InternalServerError } from "../modules/errors/custom-errors/internal-server-error.js";
+import { Controller } from "./controller.type.js";
 
-export const healthStatusController: FastifyPluginAsync = async (server) => {
+export const healthStatusController: Controller = async (server, container) => {
   const healthStatusService = container.get<HealthStatusService>(
     HealthStatusServiceImpl
   );

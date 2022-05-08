@@ -1,6 +1,6 @@
 import { FastifyInstance } from "fastify";
 import { Container } from "inversify";
-import { healthStatusController } from "./health-status.controller";
+import { healthStatusController } from "./health-status.controller.js";
 
 export const registerControllers = (
   server: FastifyInstance,

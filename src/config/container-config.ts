@@ -6,11 +6,11 @@ import {
 } from "../services/health-status/health-status-service.js";
 import { HealthStatusService } from "../services/health-status/health-status.types.js";
 import { FastifyInstance, FastifyLogFn } from "fastify";
-import { Logger } from "../server/logger/logger.types";
+import { Logger } from "../server/logger/logger.types.js";
 import {
   FastifyLogger,
   loggerIdentifier,
-} from "../server/logger/fastify-logger";
+} from "../server/logger/fastify-logger.js";
 
 export const createDependencyInjectionContainer = (
   server: FastifyInstance

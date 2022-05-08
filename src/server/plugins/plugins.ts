@@ -1,7 +1,7 @@
 import { FastifyInstance } from "fastify";
 import { Container } from "inversify";
 import fastifyBasicAuth from "@fastify/basic-auth";
-import { authenticate, validate } from "../authentication";
+import { authenticate, validate } from "../authentication.js";
 import fastifyHelmet from "@fastify/helmet";
 
 export const registerPlugins = async (

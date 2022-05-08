@@ -3,10 +3,10 @@ import { fastify, FastifyInstance } from "fastify";
 import { fastifyOptions } from "../config/fastify-options.js";
 import { AppConfig } from "../config/app-config.types.js";
 import { createDependencyInjectionContainer } from "../config/container-config.js";
-import { registerControllers } from "../controllers/controllers";
-import { registerHooks } from "./hooks/hooks";
-import { registerPlugins } from "./plugins/plugins";
-import { registerHandlers } from "./handlers/handlers";
+import { registerControllers } from "../controllers/controllers.js";
+import { registerHooks } from "./hooks/hooks.js";
+import { registerPlugins } from "./plugins/plugins.js";
+import { registerHandlers } from "./handlers/handlers.js";
 
 const printAppInfo = (server: FastifyInstance, options: AppConfig): void => {
   console.log(
@@ -26,7 +26,7 @@ const printAppInfo = (server: FastifyInstance, options: AppConfig): void => {
 };
 
 export const app = async (): Promise<void> => {
-  const server: FastifyInstance = fastify(fastifyOptions);
+  const server = fastify(fastifyOptions);
   const container = createDependencyInjectionContainer(server);
   registerHandlers(server, container);
   await registerPlugins(server, container);

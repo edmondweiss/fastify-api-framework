@@ -1,7 +1,8 @@
 import { injectable } from "inversify";
 
 /**
- * The following file serves as a standard an example on how to create a service.
+ * The following file serves as a standard and as an example on how to create a service.
+ * A service is responsible for implementing business logic.
  * The file can be copied to create services. Simply change names.
  */
 

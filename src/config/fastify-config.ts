@@ -1,6 +1,6 @@
 import { FastifyServerOptions } from "fastify";
 import { appConfig } from "./app-config.js";
 
-export const fastifyOptions: FastifyServerOptions = {
+export const fastifyConfig: FastifyServerOptions = {
   logger: appConfig.logger.enable,
 };

@@ -1,5 +1,5 @@
 import { ERROR_MESSAGES } from "../modules/errors/error-messages.js";
-import { AppConfig, AppEnvironment } from "./app-config.types.js";
+import { AppConfig, AppEnvironment } from "../types/app-config.types.js";
 
 const defaultEnvironment = "production";
 const defaultPort = "8080";

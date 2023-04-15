@@ -1,7 +1,7 @@
-import { Controller } from "../controllers/controller.type";
 import { FastifyInstance } from "fastify";
 import { Container } from "inversify";
-import { SampleService, SampleServiceIdentifier } from "./service.example";
+import { SampleService, SampleServiceIdentifier } from "./service.example.js";
+import { Controller } from "../types/controller.types.js";
 
 export const ControllerExample: Controller = async (
   server: FastifyInstance,

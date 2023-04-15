@@ -1,13 +1,13 @@
 import { FastifyInstance } from "fastify";
 import { Container } from "inversify";
-import { healthStatusController } from "./health-status.controller.js";
+import { Controller } from "../types/controller.types.js";
 
 export const registerControllers = (
   server: FastifyInstance,
-  container: Container
+  container: Container,
+  controllers: Controller[] = []
 ): void => {
-  // Add controllers to array to register them.
-  [healthStatusController].forEach((controller) =>
-    controller(server, container)
-  );
+  for (const controller of controllers) {
+    controller(server, container);
+  }
 };

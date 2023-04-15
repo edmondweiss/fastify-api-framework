@@ -1,31 +1,21 @@
 import "reflect-metadata";
-import { Container } from "inversify";
-import {
-  DefaultHealthStatusService,
-  HealthStatusServiceImpl,
-} from "../services/health-status/health-status-service.js";
-import { HealthStatusService } from "../services/health-status/health-status.types.js";
-import { FastifyInstance, FastifyLogFn } from "fastify";
-import { Logger } from "../server/logger/logger.types.js";
-import {
-  FastifyLogger,
-  loggerIdentifier,
-} from "../server/logger/fastify-logger.js";
+import { Container, interfaces } from "inversify";
+import { FastifyInstance } from "fastify";
 
 export const createDependencyInjectionContainer = (
-  server: FastifyInstance
+  server: FastifyInstance,
+  dependencyBindingFn: (container: Container) => void = () => {},
+  options: interfaces.ContainerOptions = {}
 ): Container => {
+  const { autoBindInjectable, defaultScope, skipBaseClassChecks } = options;
+
   const container = new Container({
-    defaultScope: "Singleton",
+    autoBindInjectable: autoBindInjectable ?? true,
+    defaultScope: defaultScope ?? "Singleton",
+    skipBaseClassChecks,
   });
 
-  container
-    .bind<Logger<Parameters<FastifyLogFn>>>(loggerIdentifier)
-    .toDynamicValue(() => new FastifyLogger(server));
-
-  container
-    .bind<HealthStatusService>(HealthStatusServiceImpl)
-    .to(DefaultHealthStatusService);
+  dependencyBindingFn(container);
 
   return container;
 };

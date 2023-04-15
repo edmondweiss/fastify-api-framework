@@ -1,4 +1,5 @@
 import { injectable } from "inversify";
+import { Service } from "../types/service.types.js";
 
 /**
  * The following file serves as a standard and as an example on how to create a service.
@@ -7,17 +8,11 @@ import { injectable } from "inversify";
  */
 
 /**
- * Add public methods to the interface. Good programming practice is to program
- * to an interface and not an implementation since implementations are subject to change.
- */
-export type SampleService = {};
-
-/**
  * Use the symbol identifier to register with the dependency injection container to
  * create a singleton throughout the application. There is no need to instantiate
  * a service more than once.
  */
-export const SampleServiceIdentifier = Symbol("DefaultSampleService");
+export const SampleServiceIdentifier = Symbol("DefaultSampleServiceIdentifier");
 
 /**
  * The injectable annotation allows the service to be injected as a dependency to another
@@ -25,4 +20,4 @@ export const SampleServiceIdentifier = Symbol("DefaultSampleService");
  * using the @inject(SampleServiceIdentifier) annotation.
  */
 @injectable()
-class DefaultSampleService implements SampleService {}
+export class SampleService implements Service<any> {}

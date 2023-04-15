@@ -1,17 +1,13 @@
 import { injectable } from "inversify";
+import { Repository } from "../types/repository.types.js";
 
 /**
  * The following file serves as a standard and as an example on how to create a repository.
- * A repository is responsible for operations on a database.
- * If connecting to an SQL based database, queries would be executed here.
+ * Repositories are classes that encapsulate the logic required to access data sources.
+ * You should create one repository per aggregate root.
+ * An aggregate root is the main entity that holds references to the other ones.
  * The file can be copied to create repositories. Simply change names.
  */
-
-/**
- * Add public methods to the interface. Good programming practice is to program
- * to an interface and not an implementation since implementations are subject to change.
- */
-export type SampleRepository = {};
 
 /**
  * Use the symbol identifier to register with the dependency injection container to
@@ -20,10 +16,5 @@ export type SampleRepository = {};
  */
 export const SampleRepositoryIdentifier = Symbol("DefaultSampleRepository");
 
-/**
- * The injectable annotation allows the service to be injected as a dependency to another
- * location by the dependency injection container. You will be able to inject this service
- * using the @inject(SampleServiceIdentifier) annotation.
- */
 @injectable()
-class DefaultSampleRepository implements SampleRepository {}
+class SampleRepository implements Repository<any> {}

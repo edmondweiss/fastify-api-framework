@@ -1,6 +1,6 @@
-import { app } from "./server/server.js";
+import { server } from "./server/server.js";
 
-app().catch((err) => {
+server().catch((err) => {
   console.log("An application error occurred.");
   console.log(err);
   process.exit(1);

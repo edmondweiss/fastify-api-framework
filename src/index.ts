@@ -1,3 +1,4 @@
+import "dotenv/config.js";
 import { server } from "./server/server.js";
 
 server().catch((err) => {

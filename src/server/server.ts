@@ -33,6 +33,8 @@ export const server = async (): Promise<void> => {
   await registerPlugins(server, container);
   registerHooks(server, container);
   registerControllers(server, container, controllers);
-  await server.listen(options.port);
+  await server.listen({
+    port: +options.port,
+  });
   printServerInfo(server, options);
 };

@@ -2,7 +2,7 @@ import { ERROR_MESSAGES } from "../modules/errors/error-messages.js";
 import { AppConfig, AppEnvironment } from "../types/app-config.types.js";
 
 const defaultEnvironment = "production";
-const defaultPort = "8080";
+const defaultPort = 8080;
 
 const validateAppEnvironment = (
   mode: string | undefined
@@ -40,5 +40,5 @@ export const appConfig: AppConfig = {
   logger: {
     enable: convertFlagToBoolean(process.env.ENABLE_LOGGING, true),
   },
-  port: process.env.port ?? defaultPort,
+  port: process.env.port ? +process.env.port : defaultPort,
 };

@@ -11,5 +11,5 @@ export type AppConfig = Readonly<{
   auth: AuthConfig;
   environment: AppEnvironment;
   logger: LogConfig;
-  port: string;
+  port: number;
 }>;

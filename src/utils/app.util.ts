@@ -7,7 +7,7 @@ export const printServerInfo = (
   options: AppConfig
 ): void => {
   console.log(
-    "Application configuration information:",
+    "Server configuration information:",
     JSON.stringify(
       {
         environment: options.environment,

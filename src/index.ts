@@ -1,8 +1,16 @@
 import "dotenv/config.js";
-import { server } from "./server/server.js";
+import { app } from "./server/app.js";
+import { printAppConfig, printServerInfo } from "./utils/app.util.js";
+import type { AppConfig } from "./types/app-config.types.js";
+import { appConfigIdentifier } from "./config/identifiers.js";
 
-server().catch((err) => {
-  console.log("An application error occurred.");
-  console.log(err);
-  process.exit(1);
-});
+app()
+  .then(([server, container]) => {
+    printAppConfig(container.get<AppConfig>(appConfigIdentifier));
+    printServerInfo(server);
+  })
+  .catch((err) => {
+    console.log("An application error occurred.");
+    console.log(err);
+    process.exit(1);
+  });

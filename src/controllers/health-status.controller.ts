@@ -1,12 +1,10 @@
-import {
-  HealthStatusService,
-  HealthStatusServiceIdentifier,
-} from "../services/health-status-service.js";
+import { HealthStatusService } from "../services/health-status-service.js";
 import { Controller } from "../types/controller.types.js";
+import { healthStatusServiceIdentifier } from "../config/identifiers.js";
 
 export const healthStatusController: Controller = async (server, container) => {
   const healthStatusService = container.get<HealthStatusService>(
-    HealthStatusServiceIdentifier
+    healthStatusServiceIdentifier
   );
 
   server.get("/health/status", async (request, reply) => {

@@ -3,7 +3,9 @@ import { inspect } from "util";
 import { AppConfig } from "../types/app-config.types.js";
 
 export const printServerInfo = (server: FastifyInstance): void => {
-  console.log("🚀 Server started 🚀");
+  console.log(
+    `🚀 Server started on http://localhost:${server.addresses().at(0)?.port} 🚀`
+  );
   console.log(inspect(server.addresses().pop(), {}));
   console.log(`The routes \n${server.printRoutes({ includeHooks: true })}`);
 };

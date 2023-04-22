@@ -1,11 +1,13 @@
 {
   "compilerOptions": {
+    "allowSyntheticDefaultImports": true,
     "experimentalDecorators": true,
     "incremental": true,
     "module": "ESNext",
     "moduleResolution": "Node",
     "outDir": "dist",
     "sourceMap": true,
+    "resolveJsonModule": true,
     "strict": true,
     "target": "ES2021"
 

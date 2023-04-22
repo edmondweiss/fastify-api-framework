@@ -18,7 +18,7 @@ const createErrorRecord = (error: ServerError | Error | unknown) => {
     const internalServerError = new InternalServerError();
     record = {
       id: v4(),
-      statusCode: internalServerError.statusCode,
+      statusCode: (error as any).statusCode ?? internalServerError.statusCode,
       name: error.name,
       displayMessage: internalServerError.displayMessage,
       stack: error.stack,

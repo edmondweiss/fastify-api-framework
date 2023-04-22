@@ -11,6 +11,6 @@ app()
   })
   .catch((err) => {
     console.log("An application error occurred.");
-    console.log(err);
+    console.error(err);
     process.exit(1);
   });

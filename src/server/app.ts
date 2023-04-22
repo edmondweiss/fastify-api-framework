@@ -11,8 +11,8 @@ import { registerControllers } from "../controllers/controllers.js";
 import { registerHooks } from "./hooks/hooks.js";
 import { registerPlugins } from "./plugins/plugins.js";
 import { registerHandlers } from "./handlers/handlers.js";
-import { HealthStatusService } from "../services/health-status-service.js";
-import { healthStatusController } from "../controllers/health-status.controller.js";
+import { HealthService } from "../services/health-service";
+import { healthController } from "../controllers/health-controller";
 import { AppConfig } from "../types/app-config.types.js";
 import { Container } from "inversify";
 import {
@@ -23,7 +23,7 @@ import {
   healthStatusServiceIdentifier,
 } from "../config/identifiers.js";
 
-const controllers = [healthStatusController];
+const controllers = [healthController];
 
 export const app = async (): Promise<[FastifyInstance, Container]> => {
   const server = fastify(fastifyConfig);
@@ -37,8 +37,8 @@ export const app = async (): Promise<[FastifyInstance, Container]> => {
       .bind<FastifyBaseLogger>(fastifyBaseLoggerIdentifier)
       .toDynamicValue(() => server.log);
     container
-      .bind<HealthStatusService>(healthStatusServiceIdentifier)
-      .to(HealthStatusService);
+      .bind<HealthService>(healthStatusServiceIdentifier)
+      .to(HealthService);
   });
   registerHandlers(server, container);
   await registerPlugins(server, container);

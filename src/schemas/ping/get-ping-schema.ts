@@ -8,5 +8,6 @@ export const getPingResponseBodySchema = Type.Object({
 
 export const getPingSchema: FastifySchema = {
   tags: ["Ping"],
+  summary: "Use to test reachability of this service.",
   response: createResponseSchema(getPingResponseBodySchema),
 };

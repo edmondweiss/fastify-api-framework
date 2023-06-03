@@ -1,12 +1,20 @@
 export type GetKeyOptions = {
+  /** If set to true, throws error if environment variable is not found. */
   required?: boolean;
   defaultValue?: string;
+  fallbackEnvVariable?: string;
 };
+
+const positiveNumbersRegex = /[1-9]+/;
 
 class EnvReader {
   public get(
     key: string,
-    { defaultValue = "", required = true }: GetKeyOptions = {}
+    {
+      defaultValue = "",
+      required = true,
+      fallbackEnvVariable = "",
+    }: GetKeyOptions = {}
   ): string {
     const value = process.env[key];
 
@@ -14,24 +22,27 @@ class EnvReader {
       throw new Error(`Missing required environment variable: ${key}`);
     }
 
-    return value || defaultValue;
+    return value || process.env[fallbackEnvVariable] || defaultValue;
   }
 
   public checkFlag(key: string): boolean {
     const value = process.env[key];
-    if (typeof value === "undefined") {
-      return false;
-    }
     let flag = false;
-    if (value.toLowerCase() === "true") {
-      flag = true;
-    } else if (value.toLowerCase() === "false") {
-      flag = false;
-    } else if (value === "1") {
-      flag = true;
-    } else if (value === "0") {
-      flag = false;
+    if (typeof value === "undefined") {
+      return flag;
     }
+
+    const lowerCaseValue = value.toLowerCase();
+
+    if (
+      lowerCaseValue === "true" ||
+      value === "1" ||
+      positiveNumbersRegex.test(value) ||
+      lowerCaseValue === "yes"
+    ) {
+      flag = true;
+    }
+
     return flag;
   }
 }

@@ -1,5 +1,5 @@
-export const appConfigIdentifier = Symbol.for("AppConfig");
-export const appIdentifier = Symbol.for("App");
-export const fastifyBaseLoggerIdentifier = Symbol.for("FastifyBaseLogger");
-export const fastifyConfigIdentifier = Symbol.for("FastifyConfig");
-export const pingServiceIdentifier = Symbol.for("PingServiceIdentifier");
+export const appConfigIdentifier = Symbol("AppConfig");
+export const appIdentifier = Symbol("App");
+export const fastifyBaseLoggerIdentifier = Symbol("FastifyBaseLogger");
+export const fastifyConfigIdentifier = Symbol("FastifyConfig");
+export const pingServiceIdentifier = Symbol("PingServiceIdentifier");

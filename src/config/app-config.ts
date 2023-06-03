@@ -13,21 +13,23 @@ const validateAppEnvironment = (mode: string | undefined): AppEnvironment => {
   }
 };
 
-export const appConfig: AppConfig = {
-  auth: {
-    realm: env.get("BASIC_AUTH_REALM"),
-    credentials: new Map([
-      [
-        env.get("SAMPLE_USERNAME", { defaultValue: "user" }),
-        env.get("SAMPLE_PASSWORD", { defaultValue: "password" }),
-      ],
-    ]),
-  },
-  environment: validateAppEnvironment(
-    env.get("NODE_ENV", { defaultValue: "production" })
-  ),
-  logger: {
-    enable: env.checkFlag("ENABLE_LOGGING"),
-  },
-  port: +env.get("port", { defaultValue: "8080" }),
-};
+export const getAppConfig = (): AppConfig => {
+  return {
+    auth: {
+      realm: env.get("BASIC_AUTH_REALM"),
+      credentials: new Map([
+        [
+          env.get("SAMPLE_USERNAME", { defaultValue: "user" }),
+          env.get("SAMPLE_PASSWORD", { defaultValue: "password" }),
+        ],
+      ]),
+    },
+    environment: validateAppEnvironment(
+      env.get("NODE_ENV", { defaultValue: "production" })
+    ),
+    logger: {
+      enable: env.checkFlag("ENABLE_LOGGING"),
+    },
+    port: +env.get("port", { defaultValue: "8080" }),
+  };
+}

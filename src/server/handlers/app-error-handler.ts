@@ -1,4 +1,4 @@
-import { FastifyErrorHandler } from "../fastify.types.js";
+import { FastifyErrorHandler } from "../../types/fastify.types";
 import { ServerError } from "../../modules/errors/server-error.js";
 import {
   ApiError,

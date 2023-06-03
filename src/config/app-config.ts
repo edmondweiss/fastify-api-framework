@@ -16,7 +16,7 @@ const validateAppEnvironment = (mode: string | undefined): AppEnvironment => {
 export const getAppConfig = (): AppConfig => {
   return {
     auth: {
-      realm: env.get("BASIC_AUTH_REALM"),
+      realm: env.get("BASIC_AUTH_REALM", { required: false }),
       credentials: new Map([
         [
           env.get("SAMPLE_USERNAME", { defaultValue: "user" }),
@@ -30,6 +30,6 @@ export const getAppConfig = (): AppConfig => {
     logger: {
       enable: env.checkFlag("ENABLE_LOGGING"),
     },
-    port: +env.get("port", { defaultValue: "8080" }),
+    port: +env.get("PORT", { defaultValue: "8080" }),
   };
-}
+};

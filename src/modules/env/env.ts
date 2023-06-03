@@ -18,7 +18,7 @@ class EnvReader {
   ): string {
     const value = process.env[key];
 
-    if (required && typeof value === "undefined") {
+    if (required && !defaultValue && typeof value === "undefined") {
       throw new Error(`Missing required environment variable: ${key}`);
     }
 

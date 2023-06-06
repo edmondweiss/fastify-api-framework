@@ -15,7 +15,6 @@ const controllers = [pingController];
 export const app = async (): Promise<[FastifyInstance, Container]> => {
   const appConfig = getAppConfig();
   const fastifyConfig = getFastifyConfig(appConfig);
-  // @ts-ignore
   const server = fastify(fastifyConfig);
   const container = createDependencyInjectionContainer(server);
   bindDependencies({

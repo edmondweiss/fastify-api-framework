@@ -6,6 +6,7 @@ import { appConfigIdentifier } from "./config/identifiers.js";
 import { FastifyInstance } from "fastify";
 import { Container } from "inversify";
 
+/** Closes the application. */
 async function close(
   signal: string,
   server: FastifyInstance,
@@ -18,6 +19,8 @@ async function close(
     console.log("Server closed.");
   });
 }
+
+/** The main entry point of the application. */
 async function main() {
   let server: FastifyInstance;
   let container: Container;

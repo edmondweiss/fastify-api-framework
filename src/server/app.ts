@@ -1,34 +1,38 @@
-import { getAppConfig } from "../config/app-config.js";
-import { fastify, FastifyInstance } from "fastify";
-import { getFastifyConfig } from "../config/fastify-config.js";
+import { fastify, FastifyInstance, FastifyServerOptions } from "fastify";
 import { createDependencyInjectionContainer } from "../container/dependency-injection-container";
-import { registerControllers } from "../controllers/controllers.js";
-import { registerHooks } from "./hooks/hooks.js";
-import { registerPlugins } from "./plugins/plugins.js";
 import { registerHandlers } from "./handlers/handlers.js";
-import { pingController } from "../controllers/ping-controller";
 import { Container } from "inversify";
-import { bindDependencies } from "../container/container-bindings";
+import {
+  bindAfterServerCreation,
+  bindBeforeServerCreation,
+} from "../container/container-bindings";
+import { registerRoutes } from "../controllers/controllers";
+import { registerPlugins } from "./plugins/plugins";
+import {
+  appConfigIdentifier,
+  fastifyConfigIdentifier,
+} from "../config/identifiers";
+import { AppConfig } from "../types/app-config.types";
 
-const controllers = [pingController];
-
+/**
+ * Initializes the application by creating a dependency injection container,
+ * binding all dependencies, and starting the server.
+ */
 export const app = async (): Promise<[FastifyInstance, Container]> => {
-  const appConfig = getAppConfig();
-  const fastifyConfig = getFastifyConfig(appConfig);
-  const server = fastify(fastifyConfig);
-  const container = createDependencyInjectionContainer(server);
-  bindDependencies({
-    appConfig,
+  const container = createDependencyInjectionContainer();
+  bindBeforeServerCreation({
     container,
-    fastifyConfig,
-    server,
   });
-  registerHandlers(server, container);
+  const server = fastify(
+    container.get<FastifyServerOptions>(fastifyConfigIdentifier)
+  );
+  bindAfterServerCreation(container, server);
+  registerHandlers(server);
+  await registerRoutes(server, container);
   await registerPlugins(server, container);
-  registerHooks(server, container);
-  registerControllers(server, container, controllers);
+  const { port } = container.get<AppConfig>(appConfigIdentifier);
   await server.listen({
-    port: +appConfig.port,
+    port: +port,
   });
   return [server, container];
 };

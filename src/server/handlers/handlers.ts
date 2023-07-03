@@ -1,10 +1,6 @@
 import { FastifyInstance } from "fastify";
-import { Container } from "inversify";
 import { appErrorHandler } from "./app-error-handler.js";
 
-export const registerHandlers = (
-  server: FastifyInstance,
-  container: Container
-): void => {
+export const registerHandlers = (server: FastifyInstance): void => {
   server.setErrorHandler(appErrorHandler);
 };

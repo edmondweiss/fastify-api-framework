@@ -1,4 +1,5 @@
-import { FastifyInstance } from 'fastify';
-import { Container } from 'inversify';
+import { FastifyInstance } from "fastify";
 
-export type Controller = (server: FastifyInstance, container: Container) => void;
+export interface Controller {
+  register(server: FastifyInstance): Controller;
+}

@@ -18,7 +18,9 @@ import { AppConfig } from "../types/app-config.types";
  * Initializes the application by creating a dependency injection container,
  * binding all dependencies, and starting the server.
  */
-export const app = async (): Promise<[FastifyInstance, Container]> => {
+export const app = async (): Promise<
+  [AppConfig, FastifyInstance, Container]
+> => {
   const container = createDependencyInjectionContainer();
   bindBeforeServerCreation({
     container,
@@ -30,9 +32,9 @@ export const app = async (): Promise<[FastifyInstance, Container]> => {
   registerHandlers(server);
   await registerRoutes(server, container);
   await registerPlugins(server, container);
-  const { port } = container.get<AppConfig>(appConfigIdentifier);
+  const appConfig = container.get<AppConfig>(appConfigIdentifier);
   await server.listen({
-    port: +port,
+    port: +appConfig.port,
   });
-  return [server, container];
+  return [appConfig, server, container];
 };

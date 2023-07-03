@@ -2,7 +2,6 @@ import "dotenv/config.js";
 import { app } from "./server/app.js";
 import { printAppConfig, printServerInfo } from "./utils/app.util.js";
 import type { AppConfig } from "./types/app-config.types.js";
-import { appConfigIdentifier } from "./config/identifiers.js";
 import { FastifyInstance } from "fastify";
 import { Container } from "inversify";
 
@@ -22,12 +21,13 @@ async function close(
 
 /** The main entry point of the application. */
 async function main() {
-  let server: FastifyInstance;
+  let appConfig: AppConfig;
   let container: Container;
+  let server: FastifyInstance;
 
   try {
-    [server, container] = await app();
-    printAppConfig(container.get<AppConfig>(appConfigIdentifier));
+    [appConfig, server, container] = await app();
+    printAppConfig(appConfig);
     printServerInfo(server);
   } catch (err) {
     console.log("An application error occurred.");

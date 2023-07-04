@@ -1,18 +1,37 @@
-import { FastifyInstance } from "fastify";
-import { Container } from "inversify";
-import { SampleService, SampleServiceIdentifier } from "./service.example.js";
+import { FastifyBaseLogger, FastifyInstance } from "fastify";
 import { TypeBoxTypeProvider } from "@fastify/type-provider-typebox";
+import { inject, injectable } from "inversify";
+import { fastifyBaseLoggerIdentifier } from "../config/identifiers";
 
-export const ControllerExample = async (
-  server: FastifyInstance,
-  container: Container
-) => {
-  // You can grab objects via the container and use them in the controllers.
-  const sampleService = container.get<SampleService>(SampleServiceIdentifier);
+@injectable()
+class ExampleController {
+  constructor(
+    @inject(fastifyBaseLoggerIdentifier)
+    private readonly logger: FastifyBaseLogger
+  ) {}
 
-  const routes = server.withTypeProvider<TypeBoxTypeProvider>();
+  register(server: FastifyInstance): ExampleController {
+    const routes = server.withTypeProvider<TypeBoxTypeProvider>();
 
-  routes.get("/sample", {}, (request, reply) => {
-    sampleService.toString();
-  });
-};
+    routes.get(
+      "/example",
+      {
+        schema: {
+          response: {
+            200: {
+              type: "object",
+              properties: {
+                message: { type: "string" },
+              },
+            },
+          },
+        },
+      },
+      async (request, reply) => {
+        reply.header("Content-Type", "application/json");
+        return { message: "Hello World!" };
+      }
+    );
+    return this;
+  }
+}

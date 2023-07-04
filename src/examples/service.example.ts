@@ -1,5 +1,5 @@
 import { injectable } from "inversify";
-import { Service } from "../types/service.types.js";
+import { Service } from "../types/service.types";
 
 /**
  * The following file serves as a standard and as an example on how to create a service.

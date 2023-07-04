@@ -35,9 +35,9 @@ async function main() {
     process.exit(1);
   }
 
-  process.on("SIGINT", (signal) => close(signal, server, container));
-  process.on("SIGTERM", (signal) => close(signal, server, container));
-  process.on("SIGQUIT", (signal) => close(signal, server, container));
+  // process.on("SIGINT", (signal) => close(signal, server, container));
+  // process.on("SIGTERM", (signal) => close(signal, server, container));
+  // process.on("SIGQUIT", (signal) => close(signal, server, container));
 }
 
 await main();

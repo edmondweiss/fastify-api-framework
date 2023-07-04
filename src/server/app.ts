@@ -13,6 +13,7 @@ import {
   fastifyConfigIdentifier,
 } from "../config/identifiers";
 import { AppConfig } from "../types/app-config.types";
+import { registerHooks } from "./hooks/hooks";
 
 /**
  * Initializes the application by creating a dependency injection container,
@@ -30,8 +31,10 @@ export const app = async (): Promise<
   );
   bindAfterServerCreation(container, server);
   registerHandlers(server);
-  await registerRoutes(server, container);
   await registerPlugins(server, container);
+  await registerRoutes(server, container);
+  await registerHooks(server);
+
   const appConfig = container.get<AppConfig>(appConfigIdentifier);
   await server.listen({
     port: +appConfig.port,

@@ -1,10 +1,10 @@
 import { PingService } from "../services/ping-service";
 import { Controller } from "../types/controller.types.js";
 import { pingServiceIdentifier } from "../config/identifiers.js";
-import { getPingSchema } from "../schemas/ping/get-ping-schema";
 import { TypeBoxTypeProvider } from "@fastify/type-provider-typebox";
 import { FastifyInstance } from "fastify";
 import { inject, injectable } from "inversify";
+import { getPingSchema } from "../schemas/ping/get-ping-schema";
 
 @injectable()
 export class PingController implements Controller {

@@ -1,5 +1,5 @@
 import { injectable } from "inversify";
-import { Repository } from "../types/repository.types.js";
+import { Repository } from "../types/repository.types";
 
 /**
  * The following file serves as a standard and as an example on how to create a repository.

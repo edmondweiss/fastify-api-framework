@@ -25,11 +25,11 @@ class EnvReader {
     return value || process.env[fallbackEnvVariable] || defaultValue;
   }
 
-  public checkFlag(key: string): boolean {
+  public checkFlag(key: string, defaultValue?: boolean): boolean {
     const value = process.env[key];
     let flag = false;
     if (typeof value === "undefined") {
-      return flag;
+      return defaultValue ?? flag;
     }
 
     const lowerCaseValue = value.toLowerCase();

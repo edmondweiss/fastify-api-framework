@@ -5,38 +5,52 @@ import { PingController } from "./ping-controller";
 import { fastifyAuth } from "@fastify/auth";
 import fastifyBasicAuth from "@fastify/basic-auth";
 import { getAuthenticationOptions, validate } from "../server/authentication";
+import { ControllerRegistrationOptions } from "../types/controller.types";
 
 /** All routes are registered here with options to add authentication
  * or not based on the fastify scope the controllers are registered. */
-export const registerRoutes = async (
+export const registerControllers = async (
   server: FastifyInstance,
-  container: Container
+  container: Container,
+  options: ControllerRegistrationOptions = {
+    enableAuthentication: true,
+    authenticateAllRoutes: false,
+  }
 ): Promise<FastifyInstance> => {
-  // Routes which don't need authentication are registered here.
-  unauthenticatedControllers(server, container);
-
-  // Routes which need authentication are registered here.
-  await server.register(async function createAuthScope(authenticationScope) {
-    authenticationScope
-      .register(fastifyAuth)
-      .register(fastifyBasicAuth, {
-        authenticate: getAuthenticationOptions(container),
-        validate: validate(container),
-      })
-      .after((err) => {
-        if (err) {
-          authenticationScope.log.error(
-            `Error registering authentication.`,
-            err
+  // If authentication is disabled globally, then all routes are registered
+  // without an authentication scope.
+  if (options.enableAuthentication) {
+    await server.register(async function createAuthScope(authenticationScope) {
+      authenticationScope
+        .register(fastifyAuth)
+        .register(fastifyBasicAuth, {
+          authenticate: getAuthenticationOptions(container),
+          validate: validate(container),
+        })
+        .after((err) => {
+          if (err) {
+            authenticationScope.log.error(
+              `Error registering authentication.`,
+              err
+            );
+          }
+          authenticationScope.addHook(
+            "onRequest",
+            authenticationScope.auth([authenticationScope.basicAuth])
           );
-        }
-        authenticationScope.addHook(
-          "onRequest",
-          authenticationScope.auth([authenticationScope.basicAuth])
-        );
-        authenticatedControllers(authenticationScope, container);
-      });
-  });
+          if (options.authenticateAllRoutes) {
+            authenticatedControllers(authenticationScope, container);
+            unauthenticatedControllers(authenticationScope, container);
+          } else {
+            authenticatedControllers(authenticationScope, container);
+            unauthenticatedControllers(server, container);
+          }
+        });
+    });
+  } else {
+    authenticatedControllers(server, container);
+    unauthenticatedControllers(server, container);
+  }
 
   return server;
 };

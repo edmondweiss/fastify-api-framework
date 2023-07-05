@@ -6,7 +6,7 @@ import {
   bindAfterServerCreation,
   bindBeforeServerCreation,
 } from "../container/container-bindings";
-import { registerRoutes } from "../controllers/controllers";
+import { registerControllers } from "../controllers/controllers";
 import { registerPlugins } from "./plugins/plugins";
 import {
   appConfigIdentifier,
@@ -31,11 +31,13 @@ export const app = async (): Promise<
   );
   bindAfterServerCreation(container, server);
   registerHandlers(server);
-  await registerPlugins(server, container);
-  await registerRoutes(server, container);
+  const appConfig = container.get<AppConfig>(appConfigIdentifier);
+  await registerPlugins(server, {
+    enableSwagger: appConfig.swagger.enable,
+  });
+  await registerControllers(server, container);
   await registerHooks(server);
 
-  const appConfig = container.get<AppConfig>(appConfigIdentifier);
   await server.listen({
     port: +appConfig.port,
   });

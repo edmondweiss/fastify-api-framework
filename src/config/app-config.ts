@@ -31,5 +31,8 @@ export const getAppConfig = (): AppConfig => {
       enable: env.checkFlag("ENABLE_LOGGING"),
     },
     port: +env.get("PORT", { defaultValue: "8080" }),
+    swagger: {
+      enable: env.checkFlag("ENABLE_SWAGGER", true),
+    },
   };
 };

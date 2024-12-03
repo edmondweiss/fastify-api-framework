@@ -1,29 +1,29 @@
 import { PingService } from "../services/ping-service";
 import { Controller } from "../types/controller.types.js";
 import { pingServiceIdentifier } from "../config/identifiers.js";
-import { TypeBoxTypeProvider } from "@fastify/type-provider-typebox";
+import { ZodTypeProvider } from "fastify-type-provider-zod";
 import { FastifyInstance } from "fastify";
 import { inject, injectable } from "inversify";
-import { getPingSchema } from "../schemas/ping/get-ping-schema";
+import { pingSchemas } from "./ping.schemas";
 
 @injectable()
 export class PingController implements Controller {
   constructor(
-    @inject(pingServiceIdentifier) private readonly pingService: PingService
+    @inject(pingServiceIdentifier) private readonly pingService: PingService,
   ) {}
 
   register(server: FastifyInstance): Controller {
-    const routes = server.withTypeProvider<TypeBoxTypeProvider>();
+    const routes = server.withTypeProvider<ZodTypeProvider>();
 
     routes.get(
       "/ping",
       {
-        schema: getPingSchema,
+        schema: pingSchemas,
       },
       async (request, reply) => {
         reply.header("Content-Type", "application/json");
         return reply.code(200).send(this.pingService.ping());
-      }
+      },
     );
     return this;
   }

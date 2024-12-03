@@ -1,7 +1,7 @@
 import { FastifyInstance } from "fastify";
 import { Container } from "inversify";
 import { pingControllerIdentifier } from "../config/identifiers";
-import { PingController } from "./ping-controller";
+import { PingController } from "./ping.controller";
 import { fastifyAuth } from "@fastify/auth";
 import fastifyBasicAuth from "@fastify/basic-auth";
 import { getAuthenticationOptions, validate } from "../server/authentication";
@@ -15,7 +15,7 @@ export const registerControllers = async (
   options: ControllerRegistrationOptions = {
     enableAuthentication: true,
     authenticateAllRoutes: false,
-  }
+  },
 ): Promise<FastifyInstance> => {
   // If authentication is disabled globally, then all routes are registered
   // without an authentication scope.
@@ -31,12 +31,12 @@ export const registerControllers = async (
           if (err) {
             authenticationScope.log.error(
               `Error registering authentication.`,
-              err
+              err,
             );
           }
           authenticationScope.addHook(
             "onRequest",
-            authenticationScope.auth([authenticationScope.basicAuth])
+            authenticationScope.auth([authenticationScope.basicAuth]),
           );
           if (options.authenticateAllRoutes) {
             authenticatedControllers(authenticationScope, container);
@@ -58,7 +58,7 @@ export const registerControllers = async (
 /** If you need all routes in a controller to have authentication, add them here. */
 export const authenticatedControllers = (
   server: FastifyInstance,
-  container: Container
+  container: Container,
 ): void => {};
 
 /** If you need all routes in a controller to be unauthenticated, add them here.
@@ -67,7 +67,7 @@ export const authenticatedControllers = (
  * to the routes themselves which need the authentication in the controller. */
 const unauthenticatedControllers = (
   server: FastifyInstance,
-  container: Container
+  container: Container,
 ): void => {
   container.get<PingController>(pingControllerIdentifier).register(server);
 };

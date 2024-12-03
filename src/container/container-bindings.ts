@@ -14,7 +14,7 @@ import {
 } from "fastify";
 import { PingService } from "../services/ping-service";
 import { Container } from "inversify";
-import { PingController } from "../controllers/ping-controller";
+import { PingController } from "../controllers/ping.controller";
 import { getAppConfig } from "../config/app-config";
 import { getFastifyConfig } from "../config/fastify-config";
 
@@ -32,7 +32,7 @@ export const bindBeforeServerCreation = ({
   container
     .bind<FastifyServerOptions>(fastifyConfigIdentifier)
     .toConstantValue(
-      getFastifyConfig(container.get<AppConfig>(appConfigIdentifier))
+      getFastifyConfig(container.get<AppConfig>(appConfigIdentifier)),
     );
   container.bind<PingService>(pingServiceIdentifier).to(PingService);
   container.bind<PingController>(pingControllerIdentifier).to(PingController);
@@ -43,7 +43,7 @@ export const bindBeforeServerCreation = ({
  * Access to the server is provided. */
 export const bindAfterServerCreation = (
   container: Container,
-  server: FastifyInstance
+  server: FastifyInstance,
 ): Container => {
   container.bind<FastifyInstance>(appIdentifier).toConstantValue(server);
   container

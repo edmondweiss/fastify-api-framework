@@ -17,7 +17,9 @@ const errorSchema = {
   },
 };
 
-export const createResponseSchema = (successSchema: Record<string, any>) => {
+export const createDefaultResponseSchema = (
+  successSchema: Record<string, any>,
+) => {
   return {
     "2xx": successSchema,
     // TODO: What is the correct response schema for 3xx?

@@ -1,14 +1,14 @@
 import { FastifyBasicAuthOptions } from "@fastify/basic-auth";
-import { AuthError } from "../modules/errors/custom-errors/auth-error.js";
-import { ERROR_MESSAGES } from "../modules/errors/error-messages.js";
 import { Container } from "inversify";
-import { appConfigIdentifier } from "../config/identifiers";
-import { AppConfig } from "../types/app-config.types";
+import { serverConfigIdentifier } from "../configs/identifiers";
+import { createError } from "./handlers/app-error-handler";
+import { errors } from "./errors/errors";
+import { AppConfig, ServerConfig } from "./config.types";
 
 export const validate = (
-  container: Container
+  container: Container,
 ): FastifyBasicAuthOptions["validate"] => {
-  const appConfig = container.get<AppConfig>(appConfigIdentifier);
+  const appConfig = container.get<AppConfig>(serverConfigIdentifier);
   return (username, password, req, reply, done) => {
     if (
       appConfig.auth.credentials.has(username) &&
@@ -18,16 +18,18 @@ export const validate = (
     }
 
     done(
-      new AuthError({
-        message: ERROR_MESSAGES.authMsg(username, password),
-      })
+      createError({
+        code: errors.authError.code,
+        message: errors.authError.message(),
+        statusCode: 401,
+      }),
     );
   };
 };
 
 export const getAuthenticationOptions = (container: Container) => {
-  const appConfig = container.get<AppConfig>(appConfigIdentifier);
+  const config = container.get<ServerConfig>(serverConfigIdentifier);
   return {
-    realm: appConfig.auth.realm,
+    realm: config.app.auth.realm,
   };
 };

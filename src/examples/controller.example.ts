@@ -1,13 +1,13 @@
 import { FastifyBaseLogger, FastifyInstance } from "fastify";
 import { TypeBoxTypeProvider } from "@fastify/type-provider-typebox";
 import { inject, injectable } from "inversify";
-import { fastifyBaseLoggerIdentifier } from "../config/identifiers";
+import { loggerIdentifier } from "../configs/identifiers";
 
 @injectable()
 class ExampleController {
   constructor(
-    @inject(fastifyBaseLoggerIdentifier)
-    private readonly logger: FastifyBaseLogger
+    @inject(loggerIdentifier)
+    private readonly logger: FastifyBaseLogger,
   ) {}
 
   register(server: FastifyInstance): ExampleController {
@@ -30,7 +30,7 @@ class ExampleController {
       async (request, reply) => {
         reply.header("Content-Type", "application/json");
         return { message: "Hello World!" };
-      }
+      },
     );
     return this;
   }

@@ -1,5 +1,5 @@
 import { injectable } from "inversify";
-import type { PingData } from "../types/ping-service.types";
+import type { PingData } from "./ping-service.types";
 
 @injectable()
 export class PingService {

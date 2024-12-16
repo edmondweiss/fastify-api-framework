@@ -1,5 +1,6 @@
 import "reflect-metadata";
 import { Container, interfaces } from "inversify";
+import { ContainerInstance } from "../server/app.types";
 
 /**
  * Create a dependency injection container with the given options.
@@ -7,8 +8,8 @@ import { Container, interfaces } from "inversify";
  * The container is the single source of truth for all dependencies.
  */
 export const createDependencyInjectionContainer = (
-  options: interfaces.ContainerOptions = {}
-): Container => {
+  options: interfaces.ContainerOptions = {},
+): ContainerInstance => {
   const { autoBindInjectable, defaultScope, skipBaseClassChecks } = options;
 
   return new Container({

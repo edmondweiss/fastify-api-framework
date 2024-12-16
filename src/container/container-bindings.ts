@@ -1,41 +1,24 @@
-import { AppConfig } from "../types/app-config.types";
 import {
-  appConfigIdentifier,
   appIdentifier,
-  fastifyBaseLoggerIdentifier,
-  fastifyConfigIdentifier,
-  pingControllerIdentifier,
+  loggerIdentifier,
   pingServiceIdentifier,
-} from "../config/identifiers";
-import {
-  FastifyBaseLogger,
-  FastifyInstance,
-  FastifyServerOptions,
-} from "fastify";
+  serverConfigIdentifier,
+} from "../configs/identifiers";
+import { FastifyBaseLogger } from "fastify";
 import { PingService } from "../services/ping-service";
 import { Container } from "inversify";
-import { PingController } from "../controllers/ping.controller";
-import { getAppConfig } from "../config/app-config";
-import { getFastifyConfig } from "../config/fastify-config";
-
-export type BindDependenciesOptions = {
-  container: Container;
-};
+import { ServerConfig } from "../server/config.types";
+import { useConfig } from "../server/config";
+import { ContainerInstance, ServerInstance } from "../server/app.types";
 
 /** Bind all dependencies here which need to be bound before the server is created. */
-export const bindBeforeServerCreation = ({
-  container,
-}: BindDependenciesOptions): Container => {
+export const bindBeforeServerCreation = (
+  container: ContainerInstance,
+): Container => {
   container
-    .bind<AppConfig>(appConfigIdentifier)
-    .toConstantValue(getAppConfig());
-  container
-    .bind<FastifyServerOptions>(fastifyConfigIdentifier)
-    .toConstantValue(
-      getFastifyConfig(container.get<AppConfig>(appConfigIdentifier)),
-    );
+    .bind<ServerConfig>(serverConfigIdentifier)
+    .toConstantValue(useConfig());
   container.bind<PingService>(pingServiceIdentifier).to(PingService);
-  container.bind<PingController>(pingControllerIdentifier).to(PingController);
   return container;
 };
 
@@ -43,11 +26,11 @@ export const bindBeforeServerCreation = ({
  * Access to the server is provided. */
 export const bindAfterServerCreation = (
   container: Container,
-  server: FastifyInstance,
+  server: ServerInstance,
 ): Container => {
-  container.bind<FastifyInstance>(appIdentifier).toConstantValue(server);
+  container.bind<ServerInstance>(appIdentifier).toConstantValue(server);
   container
-    .bind<FastifyBaseLogger>(fastifyBaseLoggerIdentifier)
+    .bind<FastifyBaseLogger>(loggerIdentifier)
     .toDynamicValue(() => server.log);
   return container;
 };

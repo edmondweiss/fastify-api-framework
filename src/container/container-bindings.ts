@@ -1,15 +1,16 @@
 import {
-  appIdentifier,
   loggerIdentifier,
   pingServiceIdentifier,
   serverConfigIdentifier,
+  serverIdentifier,
 } from "../configs/identifiers";
-import { FastifyBaseLogger } from "fastify";
 import { PingService } from "../services/ping-service";
 import { Container } from "inversify";
 import { ServerConfig } from "../server/config.types";
 import { useConfig } from "../server/config";
 import { ContainerInstance, ServerInstance } from "../server/app.types";
+import type { Logger } from "../server/logger/logger.types";
+import { DefaultLogger } from "../server/logger/logger";
 
 /** Bind all dependencies here which need to be bound before the server is created. */
 export const bindBeforeServerCreation = (
@@ -28,9 +29,9 @@ export const bindAfterServerCreation = (
   container: Container,
   server: ServerInstance,
 ): Container => {
-  container.bind<ServerInstance>(appIdentifier).toConstantValue(server);
+  container.bind<ServerInstance>(serverIdentifier).toConstantValue(server);
   container
-    .bind<FastifyBaseLogger>(loggerIdentifier)
-    .toDynamicValue(() => server.log);
+    .bind<Logger>(loggerIdentifier)
+    .toConstantValue(new DefaultLogger(server.log));
   return container;
 };

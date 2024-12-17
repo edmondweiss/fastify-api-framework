@@ -6,6 +6,8 @@ export const GetPingResponseBodySchema = z.object({
   status: z.literal("ok"),
 });
 
+export type GetPingResponseBody = z.infer<typeof GetPingResponseBodySchema>;
+
 export const pingSchemas: FastifySchema = {
   tags: ["Ping"],
   summary: "Use to test reachability of this service.",

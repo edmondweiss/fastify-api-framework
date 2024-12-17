@@ -14,7 +14,7 @@ class EnvReader {
       defaultValue = "",
       required = true,
       fallbackEnvVariable = "",
-    }: GetKeyOptions = {}
+    }: GetKeyOptions = {},
   ): string {
     const value = process.env[key];
 

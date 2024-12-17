@@ -3,7 +3,6 @@ import { printAppConfig, printServerInfo } from "./utils/app.utils";
 import { fastify, FastifyInstance } from "fastify";
 import { Container } from "inversify";
 import { ServerConfig } from "./server/config.types";
-import { createDependencyInjectionContainer } from "./container/dependency-injection-container";
 import {
   bindAfterServerCreation,
   bindBeforeServerCreation,
@@ -13,15 +12,7 @@ import { registerHandlers } from "./server/handlers/handlers";
 import { registerPlugins } from "./server/plugins/plugins";
 import { registerControllers } from "./server/plugins/controllers";
 import { registerHooks } from "./server/hooks/hooks";
-
-// export interface DefineControllerFn {
-//   (
-//     cb: ControllerHandler,
-//     options?: FastifyRegisterOptions<any>,
-//   ): ControllerReturn;
-//
-//   (config: ControllerSetupObject): ControllerReturn;
-// }
+import { useContainer } from "./container/dependency-injection-container";
 
 /** Closes the application. */
 async function close(
@@ -30,14 +21,18 @@ async function close(
   container: Container,
 ) {
   console.log(`\n${signal} signal received.`);
+  await new Promise<void>((resolve) => {
+    server.close(() => {
+      console.log("Server closed.");
+      resolve();
+    });
+  });
   await container.unloadAsync();
   console.log("Container unloaded.");
-  server.close(() => {
-    console.log("Server closed.");
-  });
+  process.exit(0);
 }
 
-const container = createDependencyInjectionContainer();
+const container = useContainer();
 
 bindBeforeServerCreation(container);
 
@@ -90,6 +85,9 @@ try {
 printAppConfig(serverConfig);
 printServerInfo(server);
 
-// process.on("SIGINT", (signal) => close(signal, server, container));
-// process.on("SIGTERM", (signal) => close(signal, server, container));
-// process.on("SIGQUIT", (signal) => close(signal, server, container));
+// SIGINT is sent by pressing Ctrl+C in the terminal.
+process.on("SIGINT", (signal) => close(signal, server, container));
+// SIGTERM is sent by the system to request the process to terminate.
+process.on("SIGTERM", (signal) => close(signal, server, container));
+// SIGQUIT is sent by pressing Ctrl+\ in the terminal.
+process.on("SIGQUIT", (signal) => close(signal, server, container));

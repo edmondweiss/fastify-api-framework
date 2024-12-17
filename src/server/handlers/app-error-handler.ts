@@ -4,14 +4,14 @@ import { StatusCodes } from "http-status-codes";
 import { errors } from "../errors/errors";
 import { ServerErrorResponse } from "../errors/server-error.schemas";
 
-interface BaseError {
+export type BaseError = {
   code: string;
   message: string;
   details?: Record<string, any>;
   errors?: ServerError[];
   statusCode?: number;
   cause?: Error;
-}
+};
 
 class ServerError extends Error implements BaseError {
   #id = v4();

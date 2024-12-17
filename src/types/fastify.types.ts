@@ -1,5 +1,4 @@
-import { FastifyRequest } from "fastify/types/request.js";
-import { FastifyReply } from "fastify/types/reply.js";
+import type { FastifyReply, FastifyRequest } from "fastify";
 
 export type FastifyErrorHandler = (
   error: unknown,

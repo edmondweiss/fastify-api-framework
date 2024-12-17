@@ -1,4 +1,7 @@
-import { ErrorInfo } from "./errors.types";
+export interface ErrorInfo {
+  message?: (...details: any[]) => string;
+  code: string;
+}
 
 const PREFIX = "";
 const SUFFIX = "_ERR";

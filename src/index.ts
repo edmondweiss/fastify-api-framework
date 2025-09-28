@@ -14,24 +14,6 @@ import { registerControllers } from "./server/plugins/controllers";
 import { registerHooks } from "./server/hooks/hooks";
 import { useContainer } from "./container/dependency-injection-container";
 
-/** Closes the application. */
-async function close(
-  signal: string,
-  server: FastifyInstance,
-  container: Container,
-) {
-  console.log(`\n${signal} signal received.`);
-  await new Promise<void>((resolve) => {
-    server.close(() => {
-      console.log("Server closed.");
-      resolve();
-    });
-  });
-  await container.unloadAsync();
-  console.log("Container unloaded.");
-  process.exit(0);
-}
-
 const container = useContainer();
 
 bindBeforeServerCreation(container);
@@ -46,6 +28,30 @@ registerHandlers(server);
 
 const serverConfig = container.get<ServerConfig>(serverConfigIdentifier);
 
+/** Closes the application. */
+const closeServer = async ({
+  signal,
+  server,
+  container,
+  exitCode = 0,
+}: {
+  server: FastifyInstance;
+  container: Container;
+  signal?: string;
+  exitCode?: number;
+}) => {
+  signal && console.log(`\n${signal} signal received.`);
+  await new Promise<void>((resolve) => {
+    server.close(() => {
+      console.log("Server closed.");
+      resolve();
+    });
+  });
+  await container.unloadAsync();
+  console.log("Container unloaded.");
+  process.exit(exitCode);
+};
+
 try {
   await registerPlugins(server, {
     enableSwagger: serverConfig.swagger.enable,
@@ -53,7 +59,11 @@ try {
 } catch (e) {
   console.log("An error occurred while registering plugins.");
   console.error(e);
-  process.exit(1);
+  closeServer({
+    container,
+    server,
+    exitCode: 1,
+  });
 }
 
 try {
@@ -61,7 +71,11 @@ try {
 } catch (e) {
   console.log("An error occurred while registering controllers.");
   console.error(e);
-  process.exit(1);
+  closeServer({
+    container,
+    server,
+    exitCode: 1,
+  });
 }
 
 try {
@@ -69,7 +83,11 @@ try {
 } catch (e) {
   console.log("An error occurred while registering hooks.");
   console.error(e);
-  process.exit(1);
+  closeServer({
+    container,
+    server,
+    exitCode: 1,
+  });
 }
 
 try {
@@ -79,15 +97,19 @@ try {
 } catch (e) {
   console.log("An error occurred while starting the server.");
   console.error(e);
-  process.exit(1);
+  closeServer({
+    container,
+    server,
+    exitCode: 1,
+  });
 }
 
 printAppConfig(serverConfig);
 printServerInfo(server);
 
 // SIGINT is sent by pressing Ctrl+C in the terminal.
-process.on("SIGINT", (signal) => close(signal, server, container));
+process.on("SIGINT", (signal) => closeServer({ signal, server, container }));
 // SIGTERM is sent by the system to request the process to terminate.
-process.on("SIGTERM", (signal) => close(signal, server, container));
+process.on("SIGTERM", (signal) => closeServer({ signal, server, container }));
 // SIGQUIT is sent by pressing Ctrl+\ in the terminal.
-process.on("SIGQUIT", (signal) => close(signal, server, container));
+process.on("SIGQUIT", (signal) => closeServer({ signal, server, container }));

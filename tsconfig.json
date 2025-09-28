@@ -3,20 +3,15 @@
     "allowSyntheticDefaultImports": true,
     "experimentalDecorators": true,
     "incremental": true,
-    "module": "ESNext",
-    "moduleResolution": "Node",
+    "module": "nodenext",
+    "moduleResolution": "nodenext",
     "outDir": "dist",
     "sourceMap": true,
     "resolveJsonModule": true,
     "strict": true,
-    "target": "ES2022",
-    "lib": ["ES2022"],
+    "target": "ES2023",
+    "lib": ["ES2023"]
   },
-  "include": [
-    "src/**/*"
-  ],
-  "exclude": [
-    "node_modules",
-    "src/scripts"
-  ]
+  "include": ["src/**/*"],
+  "exclude": ["node_modules", "src/scripts"]
 }

@@ -21,7 +21,7 @@ export type ControllerReturn = {
   options: ControllerRegistrationOptions;
 };
 export type ControllerSetupObject = {
-  endpointSetup: ControllerHandler;
+  setup: ControllerHandler;
   options?: ControllerRegistrationOptions;
 };
 
@@ -44,7 +44,7 @@ export function defineController(
   }
 
   return {
-    plugin: handlerOrObj.endpointSetup,
+    plugin: handlerOrObj.setup,
     options: handlerOrObj.options || {},
   };
 }
